@@ -7,8 +7,6 @@
 
 typedef struct Stack Stack;
 
-void main(){}
-
 Stack *createStack(int32_t capacity) {
     Stack *stack = (Stack *)malloc(sizeof(Stack));
     if (!stack) {
