@@ -218,6 +218,39 @@ void maze_remove_wall(struct Cell *c1, struct Cell *c2, enum Direction dir) {
     }
 }
 
+
+void maze_color_start_end(const Maze *m, BmpImage *img) {
+    if (!m || !img) return;
+
+    // shorthand
+    int cs = m->cell_size;
+    int sx = m->start.x, sy = m->start.y;
+    int ex = m->end.x,   ey = m->end.y;
+
+    // Compute pixel bounds for an inset rectangle inside the walls
+    int sx0 = sx*cs + 1,  sy0 = sy*cs + 1;
+    int sx1 = (sx+1)*cs - 2, sy1 = (sy+1)*cs - 2;
+
+    // Paint start region
+    for (int y = sy0; y <= sy1; ++y) {
+        for (int x = sx0; x <= sx1; ++x) {
+            bmp_set_pixel(img, x, y, MAZE_START_COLOR);
+        }
+    }
+
+    // Compute for end cell
+    int ex0 = ex*cs + 1,  ey0 = ey*cs + 1;
+    int ex1 = (ex+1)*cs - 2, ey1 = (ey+1)*cs - 2;
+
+    // Paint end region
+    for (int y = ey0; y <= ey1; ++y) {
+        for (int x = ex0; x <= ex1; ++x) {
+            bmp_set_pixel(img, x, y, MAZE_END_COLOR);
+        }
+    }
+}
+
+
 void maze_render_to_bmp(struct Maze *m, const char *filename) {
     if (!m || !filename) return;
 
@@ -237,17 +270,9 @@ void maze_render_to_bmp(struct Maze *m, const char *filename) {
     }
 
     // Color start and end cells
-    if (m->start.x >= 0 && m->start.x < (int)m->width &&
-        m->start.y >= 0 && m->start.y < (int)m->height) {
-        struct Cell *start_cell = &m->cells[m->start.y][m->start.x];
-        maze_render_cell(m, img, start_cell);
-    }
+    maze_color_start_end(m, img);
 
-    if (m->end.x >= 0 && m->end.x < (int)m->width &&
-        m->end.y >= 0 && m->end.y < (int)m->height) {
-        struct Cell *end_cell = &m->cells[m->end.y][m->end.x];
-        maze_render_cell(m, img, end_cell);
-    }
+    bmp_save(filename, img);
 }
 
 void maze_render_cell(const struct Maze *m, struct BmpImage *img, const struct Cell *cell) {
