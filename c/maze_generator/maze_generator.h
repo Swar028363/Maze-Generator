@@ -55,7 +55,7 @@ struct Cell* maze_get_neighbor(const struct Maze *m, const struct Cell *c, enum 
 
 void maze_remove_wall(struct Cell *c1, struct Cell *c2, enum Direction dir); // Remove the wall between two neighboring cells
 
-void maze_render_to_bmp(struct Maze *m, const char *filename); // Draw the maze to a BMP file
+void maze_render_to_bmp(struct Maze *m, struct BmpImage*); // Draw the maze to a BMP file
 
 void maze_render_cell(const struct Maze *m, struct BmpImage *img, const struct Cell *cell); // Draw a cell at its pixel coordinates
 

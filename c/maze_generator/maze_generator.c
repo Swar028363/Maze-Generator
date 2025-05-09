@@ -251,11 +251,8 @@ void maze_color_start_end(const Maze *m, BmpImage *img) {
 }
 
 
-void maze_render_to_bmp(struct Maze *m, const char *filename) {
-    if (!m || !filename) return;
-
-    BmpImage* img = bmp_create(m->width * m->cell_size, m->height * m->cell_size);
-    if (!img) return; // Image creation failed
+void maze_render_to_bmp(struct Maze *m, BmpImage *img) {
+    if (!m || !img) return;
 
     for (size_t y = 0; y < img->infoHeader.biHeight; ++y) {
         for (size_t x = 0; x < img->infoHeader.biWidth; ++x) {
@@ -271,8 +268,6 @@ void maze_render_to_bmp(struct Maze *m, const char *filename) {
 
     // Color start and end cells
     maze_color_start_end(m, img);
-
-    bmp_save(filename, img);
 }
 
 void maze_render_cell(const struct Maze *m, struct BmpImage *img, const struct Cell *cell) {
