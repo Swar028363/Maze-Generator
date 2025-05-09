@@ -11,7 +11,7 @@ typedef struct RGBTriple RGBTriple;
 typedef struct BmpImage BmpImage;
 
 
-int calc_padding(int width) {
+int calculate_padding(int width) {
     return (4 - (width * sizeof(RGBTriple)) % 4) % 4; // Calculate padding for each row
 }
 
